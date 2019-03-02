@@ -14,33 +14,34 @@
 {
 	BOOL isDir = NO;
 	NSFileManager *mgr = [[NSFileManager alloc] init];
-	NSString *mimeType = @"";
+	__block NSString *mimeType = @"";
 	
-	if ([mgr fileExistsAtPath:path isDirectory:&isDir] && isDir)
-	{
+	if ([mgr fileExistsAtPath:path isDirectory:&isDir] && isDir) {
 		mimeType = @"application/x-directory";
-	}
-	else
-	{
+	} else {
 		NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:path]];
-		NSURLResponse *resp = nil;
+		//NSURLResponse *resp = nil;
+        __block NSString *resp = nil;
 		NSError *err = nil;
-		
-		[NSURLConnection sendSynchronousRequest:req 
-								returningResponse:&resp 
-											error:&err];
-		if (!err)
-		{
-			mimeType = [resp MIMEType];
-		}
-		else
-		{
-			NSLog(@"Error trying to get MimeType of file: %@ - %@", path, [err description]);
-		}
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        
+		//[NSURLConnection sendSynchronousRequest:req returningResponse:&resp error:&err];
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:req completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            NSLog(@"did finish download.\n%@", response.URL);
+            if(err) {
+                NSLog(@"Error trying to get MimeType of file: %@ - %@", path, [err description]);
+                dispatch_semaphore_signal(semaphore);
+                return;
+            }
+            resp = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            mimeType = [(NSURLResponse *)resp MIMEType];
+            dispatch_semaphore_signal(semaphore);
+        }];
+        [task resume];
 	}
-	
 	[mgr release];
-		
 	return mimeType;
 }
 

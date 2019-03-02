@@ -9,8 +9,8 @@
 #import "CurlS3ErrorCodes.h"
 #import "CurlTransferStatus.h"
 
-const NSString * S3ErrorCodeKey		= @"S3ErrorCode";
-const NSString * S3ErrorMessageKey	= @"S3ErrorMessage";
+static const NSString * S3ErrorCodeKey		= @"S3ErrorCode";
+static const NSString * S3ErrorMessageKey	= @"S3ErrorMessage";
 
 @implementation CurlS3ErrorParser
 

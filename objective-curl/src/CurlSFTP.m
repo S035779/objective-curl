@@ -42,7 +42,8 @@ NSString * const DEFAULT_KNOWN_HOSTS = @"~/.ssh/known_hosts";
  */
 - (void)dealloc
 {
-	[knownHostsFile release], knownHostsFile = nil;
+    [knownHostsFile release];
+    knownHostsFile = nil;
 
 	[super dealloc];
 }

@@ -8,9 +8,9 @@
 #import <Cocoa/Cocoa.h>
 
 
-const NSString * S3ErrorCodeKey;
+static const NSString * S3ErrorCodeKey;
 
-const NSString * S3ErrorMessageKey;
+static const NSString * S3ErrorMessageKey;
 
 
 @interface CurlS3ErrorParser : NSObject

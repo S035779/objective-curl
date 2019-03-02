@@ -37,15 +37,24 @@
 
 - (void)dealloc
 {
-	[protocolPrefix release], protocolPrefix = nil;
-	[hostname release], hostname = nil;
-	[username release], username = nil;
-	[password release], password = nil;
-	[privateKeyFile release], privateKeyFile = nil;
-	[publicKeyFile release], publicKeyFile = nil;
-	[path release], path = nil;
-	[url release], url = nil;
-	[statusMessage release], statusMessage = nil;
+    [protocolPrefix release];
+    protocolPrefix = nil;
+    [hostname release];
+    hostname = nil;
+    [username release];
+    username = nil;
+    [password release];
+    password = nil;
+    [privateKeyFile release];
+    privateKeyFile = nil;
+    [publicKeyFile release];
+    publicKeyFile = nil;
+    [path release];
+    path = nil;
+    [url release];
+    url = nil;
+    [statusMessage release];
+    statusMessage = nil;
 	
 	[super dealloc];
 }
